@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, CardText, CardTitle, CardFooter, Button, Col} from "reactstrap";
+import {Card, CardText, CardTitle, Col} from "reactstrap";
 
 import ItemThumbnail from "../ItemThumbnail/ItemThumbnail";
 import Row from "reactstrap/es/Row";
@@ -15,9 +15,6 @@ const OneItem = props => {
                     <CardText className="px-3">Description: {props.description}</CardText>
                     <p className="px-3">Author: {props.username}</p>
                     <p className="px-3">mob: {props.number}</p>
-                    <CardFooter>
-                        <Button onClick={props.onClick}>Move to sold</Button>
-                    </CardFooter>
 
                 </Card>
             </Col>

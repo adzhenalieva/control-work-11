@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {deleteItem, fetchOneItem} from "../../store/actions/itemsActions";
 
 import OneItem from "../../components/OneItem/OneItem";
-import {Alert} from "reactstrap";
+import {Alert, Button} from "reactstrap";
 
 
 class ItemFullInfo extends Component {
@@ -14,16 +14,21 @@ class ItemFullInfo extends Component {
     }
 
     deleteItem = id => {
-        if (!this.props.user) {
-            this.props.history.push('/login');
-
-        } else{
+        if (this.props.user._id === this.props.item.user._id) {
             this.props.deleteItem(id);
+        } else {
+            alert('You can delete only own items')
         }
 
     };
 
     render() {
+        let button;
+        if (this.props.user) {
+            button = <Button onClick={() => this.deleteItem(this.props.item._id)}>Move to sold</Button>
+        } else {
+            button = null;
+        }
         return (
             <Fragment>
                 {this.props.error && this.props.error.global && (
@@ -39,9 +44,9 @@ class ItemFullInfo extends Component {
                         description={this.props.item.description}
                         username={this.props.item.user.displayName}
                         number={this.props.item.user.phoneNumber}
-                        onClick={() => this.deleteItem(this.props.item._id)}
                     />
                     : <p>Loading...</p>}
+                {button}
             </Fragment>
         );
     }
