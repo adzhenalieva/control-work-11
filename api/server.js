@@ -16,7 +16,7 @@ app.use(cors());
 mongoose.connect(config.dbURL, config.mongoOptions).then(() => {
     app.use('/users', users);
     app.use('/items', items);
-    app.use('./categories', categories);
+    app.use('/categories', categories);
 
     app.listen(port, () => {
         console.log(`Server started on ${port} port`);

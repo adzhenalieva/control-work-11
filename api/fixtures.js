@@ -16,8 +16,8 @@ const run = async () => {
         await collection.drop();
     }
     const users = await User.create(
-        {user: 'leonardo', displayName: 'Leo', phoneNumber: +996775555555},
-        {user: 'april', displayName: 'April', phoneNumber: +996775555556},
+        {username: 'leonardo', displayName: 'Leo', phoneNumber: +996775555555, password: '123', token: 'ccc'},
+        {username: 'april', displayName: 'April', phoneNumber: +996775555556, password: '123', token: 'ccc'}
 
     );
 

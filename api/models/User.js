@@ -35,12 +35,6 @@ const UserSchema = new Schema({
     },
     phoneNumber: {
         type: Number,
-        validate: {
-            validator: function(v) {
-                return /d{13}/.test(v);
-            },
-            message: '{VALUE} is not a valid 10 digit number!'
-        },
         required: true
     }
 });

@@ -20,13 +20,28 @@ const upload = multer({storage});
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    Item.find()
-        .then(items => {res.send(items)})
-        .catch(() => res.sendStatus(500))
+    if (req.query.category) {
+        Item.find({category: req.query.category})
+            .then(items => {
+                if (items) return res.send(items);
+                res.sendStatus(404)
+            })
+            .catch(() => res.sendStatus(500));
+    } else {
+        Item.find()
+            .then(items => {
+                res.send(items)
+            })
+            .catch(() => res.sendStatus(500))
+    }
+
 });
 
 router.get('/:id', (req, res) => {
-    Item.findById(req.params.id).populate({ path: 'user', select: {displayName: 'displayName', phoneNumber: 'phoneNumber'}})
+    Item.findById(req.params.id).populate({
+        path: 'user',
+        select: {displayName: 'displayName', phoneNumber: 'phoneNumber'}
+    })
         .then(item => {
             if (item) return res.send(item);
             res.sendStatus(404)
@@ -40,18 +55,23 @@ router.post('/', upload.single('image'), auth, async (req, res) => {
         itemData.image = req.file.filename;
     }
     const item = await new Item(itemData);
+    item.user = req.user._id;
+    if (item.price < 0 || item.price === 0) {
+        res.status(500).send({message: "Price cannot be 0 or less than 0"})
+    }
     item.save()
         .then(result => res.send(result))
-        .catch(error => res.sendStatus(400).send(error));
+        .catch(error => res.status(400).send(error));
 });
 
 router.delete('/:id', auth, async (req, res) => {
+    const item = await Item.findById(req.params.id);
 
-    const item = await Item.find(req.user._id);
+        Item.deleteOne({_id: item._id})
+            .then(() => res.send({message: "Success"}))
+            .catch(() => res.sendStatus(500))
 
-    Item.deleteOne({_id: item._id})
-        .then(() => res.send({message: "Success"}))
-        .catch(() => res.sendStatus(403))
+
 });
 
 
