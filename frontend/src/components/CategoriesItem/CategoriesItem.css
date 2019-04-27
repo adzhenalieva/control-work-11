@@ -1,0 +1,13 @@
+.Btn{
+    display: inline-block;
+    color: black;
+    background: #61dafb;
+    border: none;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.Btn:hover{
+    text-decoration: underline;
+}
