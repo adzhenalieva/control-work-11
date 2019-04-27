@@ -10,7 +10,9 @@ export const fetchCategoriesFailure = error => ({type: FETCH_CATEGORIES_FAILURE,
 export const fetchCategories = () => {
     return dispatch => {
         return axios.get('/categories').then(
-            response => dispatch(fetchCategoriesSuccess(response.data)),
+            response => {
+                dispatch(fetchCategoriesSuccess(response.data));
+            },
             error => dispatch(fetchCategoriesFailure(error))
         );
     };
