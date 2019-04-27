@@ -4,6 +4,7 @@ const path = require('path');
 const config = require('../config');
 const nanoid = require('nanoid');
 const Item = require('../models/Item');
+const auth = require('../middleware/auth');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -33,15 +34,24 @@ router.get('/:id', (req, res) => {
         .catch(() => res.sendStatus(500));
 });
 
-router.post('/', upload.single('image'), (req, res) => {
+router.post('/', upload.single('image'), auth, async (req, res) => {
     const itemData = req.body;
     if (req.file) {
         itemData.image = req.file.filename;
     }
-    const item = new Item(itemData);
+    const item = await new Item(itemData);
     item.save()
         .then(result => res.send(result))
         .catch(error => res.sendStatus(400).send(error));
+});
+
+router.delete('/:id', auth, async (req, res) => {
+
+    const item = await Item.find(req.user._id);
+
+    Item.deleteOne({_id: item._id})
+        .then(() => res.send({message: "Success"}))
+        .catch(() => res.sendStatus(403))
 });
 
 
