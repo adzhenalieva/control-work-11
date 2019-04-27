@@ -1,5 +1,6 @@
 import axios from "../../axios-api";
 import {push} from 'connected-react-router';
+import {NotificationManager} from 'react-notifications';
 
 export const FETCH_ITEMS_SUCCESS = 'FETCH_ITEMS_SUCCESS';
 export const FETCH_ITEMS_FAILURE = "FETCH_ITEMS_FAILURE";
@@ -69,12 +70,20 @@ export const deleteItem = id => {
         let token = getState().user.user.token;
         const header = {headers: {'Authorization': token}};
         return axios.delete('/items/' + id, header).then(
-            response => {
+            () => {
                 dispatch(deleteItemSuccess());
-                console.log(response);
+                NotificationManager.success('Item deleted successfully');
                 dispatch(push('/'));
+
             },
-            error => dispatch(deleteItemFailure(error))
+            error => {
+                if(error.response  && error.response.data){
+                    dispatch(deleteItemFailure(error.response.data));
+                    NotificationManager.error(error.response.data.message);
+                } else {
+                    dispatch(deleteItemFailure({global: 'No connection'}))
+                }
+            }
         );
     };
 };
@@ -87,9 +96,16 @@ export const createItem = itemData => {
         return axios.post('/items', itemData, header).then(
             () => {
                 dispatch(createItemSuccess());
+                NotificationManager.success('Item published successfully');
                 dispatch(push('/'))
             },
-            error => dispatch(createItemFailure(error))
+            error => {
+                if(error.response  && error.response.data){
+                    dispatch(createItemFailure(error.response.data));
+                } else {
+                    dispatch(createItemFailure({global: 'No connection'}))
+                }
+            }
         );
     };
 };

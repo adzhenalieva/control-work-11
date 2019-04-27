@@ -4,7 +4,7 @@ import {Card, CardBody} from "reactstrap";
 
 const ItemsList = props => {
     return (
-        <Card className="mb-5" onClick={props.click}>
+        <Card className="my-5" onClick={props.click}>
             <CardBody>
                 <ArtistThumbnail image={props.image}/>
                 <strong className="ml-5">

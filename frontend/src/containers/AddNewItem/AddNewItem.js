@@ -19,7 +19,12 @@ class AddNewItem extends Component {
         if (!this.props.user) {
             this.props.history.push('/login');
         }
-        this.props.onFetchCategories();
+        this.props.onFetchCategories().then(
+            () => {
+                this.setState({category: this.props.categories[0]._id})
+            }
+
+        )
     }
 
     inputChangeHandler = event => {
@@ -33,7 +38,6 @@ class AddNewItem extends Component {
         const formData = new FormData();
         Object.keys(this.state).forEach(key => {
             formData.append(key, this.state[key]);
-            console.log(this.state[key]);
         });
         this.props.sendItem(formData);
     };
@@ -123,7 +127,8 @@ class AddNewItem extends Component {
 
 const mapStateToProps = state => ({
     categories: state.category.categories,
-    user: state.user.user
+    user: state.user.user,
+    error: state.item.createError
 });
 
 const mapDispatchToProps = dispatch => ({

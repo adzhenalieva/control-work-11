@@ -23,7 +23,7 @@ export const registerUser = userData => {
         return axios.post('/users', userData).then(
             (response) => {
                 dispatch(registerUserSuccess(response.data.user));
-                NotificationManager.success('Registered successfulдy');
+                NotificationManager.success('Registered successfully');
                 dispatch(push('/'));
             },
             error => {

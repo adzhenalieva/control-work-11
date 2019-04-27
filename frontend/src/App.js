@@ -13,12 +13,14 @@ import {logOutUser} from "./store/actions/userActions";
 import MainPage from "./containers/MainPage/MainPage";
 import ItemFullInfo from "./containers/ItemFullInfo/ItemFullInfo";
 import AddNewItem from "./containers/AddNewItem/AddNewItem";
+import {NotificationContainer} from "react-notifications";
 
 
 class App extends Component {
     render() {
         return (
             <div>
+                <NotificationContainer/>
                 <header>
                     <Toolbar user={this.props.user}
                              logout={this.props.logoutUser}/>

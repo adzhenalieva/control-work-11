@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import {deleteItem, fetchOneItem} from "../../store/actions/itemsActions";
 
 import OneItem from "../../components/OneItem/OneItem";
+import {Alert} from "reactstrap";
 
 
 class ItemFullInfo extends Component {
@@ -13,12 +14,23 @@ class ItemFullInfo extends Component {
     }
 
     deleteItem = id => {
-        this.props.deleteItem(id);
+        if (!this.props.user) {
+            this.props.history.push('/login');
+
+        } else{
+            this.props.deleteItem(id);
+        }
+
     };
 
     render() {
         return (
             <Fragment>
+                {this.props.error && this.props.error.global && (
+                    <Alert color="danger">
+                        Check internet connection!
+                    </Alert>
+                )}
                 {this.props.item && this.props.item.user ?
                     <OneItem
                         item={this.props.item.item}
@@ -38,7 +50,8 @@ class ItemFullInfo extends Component {
 const mapStateToProps = state => {
     return {
         item: state.item.oneItem,
-        error: state.item.fetchError
+        error: state.item.error,
+        user: state.user.user
     }
 };
 

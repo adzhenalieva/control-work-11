@@ -8,9 +8,8 @@ import {
 
 const initialState = {
     items: [],
-    fetchError: null,
+    error: null,
     createError: null,
-    deleteError: null,
     oneItem: []
 };
 
@@ -20,23 +19,23 @@ const itemsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 items: action.items,
-                fetchError: null
+                error: null
             };
         case FETCH_ITEMS_FAILURE:
             return {
                 ...state,
-                fetchError: action.error
+               error: action.error
             };
         case FETCH_ONE_ITEM_SUCCESS:
             return {
                 ...state,
                 oneItem: action.item,
-                fetchError: null
+                error: null
             };
         case FETCH_ONE_ITEM_FAILURE:
             return {
                 ...state,
-                fetchError: action.error
+                error: action.error
             };
         case CREATE_ITEM_SUCCESS:
             return {
@@ -51,12 +50,12 @@ const itemsReducer = (state = initialState, action) => {
         case DELETE_ITEM_SUCCESS:
             return {
                 ...state,
-                deleteError: null
+                error: null
             };
         case DELETE_ITEM_FAILURE:
             return {
                 ...state,
-                deleteError: action.error
+                error: action.error
             };
         default:
             return state;

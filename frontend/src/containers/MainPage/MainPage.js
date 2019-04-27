@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import {connect} from "react-redux";
 
-import {CardColumns} from "reactstrap";
+import {Alert, CardColumns} from "reactstrap";
 
 import {fetchCategories} from "../../store/actions/categoriesActions";
 import {fetchItems} from "../../store/actions/itemsActions";
@@ -28,6 +28,11 @@ class MainPage extends Component {
     render() {
         return (
             <Fragment>
+                {this.props.error && this.props.error.global && (
+                    <Alert color="danger">
+                        Check internet connection!
+                    </Alert>
+                )}
                 <div>
                     <button className="Btn" onClick={() => this.props.onFetchItems()}>All items</button>
                     {this.props.categories.map(category => (
@@ -37,16 +42,17 @@ class MainPage extends Component {
                             onClick={() => this.goToCategory(category._id)}/>
                     ))}
                 </div>
-                <CardColumns>
-                {this.props.items.map(item => (
-                    <ItemsList
-                        key={item._id}
-                        price={item.price}
-                        item={item.item}
-                        image={item.image}
-                        click={() => this.goToItem(item._id)}/>
-                ))}
-                </CardColumns>
+                    <CardColumns>
+                        {this.props.items.map(item => (
+                            <ItemsList
+                                key={item._id}
+                                price={item.price}
+                                item={item.item}
+                                image={item.image}
+                                click={() => this.goToItem(item._id)}/>
+                        ))
+                        }
+                    </CardColumns>
             </Fragment>
         );
     }
