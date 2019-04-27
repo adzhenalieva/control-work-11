@@ -65,11 +65,10 @@ router.post('/', upload.single('image'), auth, async (req, res) => {
 });
 
 router.delete('/:id', auth, async (req, res) => {
-    const item = await Item.findById(req.params.id);
 
-        Item.deleteOne({_id: item._id})
+    await Item.findByIdAndDelete(req.user._id)
             .then(() => res.send({message: "Success"}))
-            .catch(() => res.sendStatus(500))
+            .catch(() => res.status(403)).send({message: 'You can delete only own items'})
 
 
 });
